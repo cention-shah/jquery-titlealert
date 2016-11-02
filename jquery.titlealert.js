@@ -37,6 +37,19 @@
  * @desc Flash title bar with text "Hello World!", if the window doesn't have focus, for 10 seconds or until window gets focused, with an interval of 500ms
  */
 ;(function($){	
+	function getDoc() {
+		function inIFrame() {
+		    try {
+		        return window.self !== window.top;
+		    } catch (e) {
+		        return true;
+		    }
+		}
+		if(inIFrame()){
+			return parent.document;
+		}
+		return document;
+	}
 	$.titleAlert = function(text, settings) {
 		// check if it currently flashing something, if so reset it
 		if ($.titleAlert._running)
@@ -53,8 +66,8 @@
 		settings.originalTitleInterval = settings.originalTitleInterval || settings.interval;
 		
 		$.titleAlert._running = true;
-		$.titleAlert._initialText = document.title;
-		document.title = text;
+		$.titleAlert._initialText = getDoc().title;
+		getDoc().title = text;
 		var showingAlertTitle = true;
 		var switchTitle = function() {
 			// WTF! Sometimes Internet Explorer 6 calls the interval function an extra time!
@@ -62,13 +75,13 @@
 				return;
 			
 		    showingAlertTitle = !showingAlertTitle;
-		    document.title = (showingAlertTitle ? text : $.titleAlert._initialText);
+		    getDoc().title = (showingAlertTitle ? text : $.titleAlert._initialText);
 		    $.titleAlert._intervalToken = setTimeout(switchTitle, (showingAlertTitle ? settings.interval : settings.originalTitleInterval));
 		}
 		$.titleAlert._intervalToken = setTimeout(switchTitle, settings.interval);
 		
 		if (settings.stopOnMouseMove) {
-			$(document).mousemove(function(event) {
+			$(getDoc()).mousemove(function(event) {
 				$(this).unbind(event);
 				$.titleAlert.stop();
 			});
@@ -99,7 +112,7 @@
 		
 		clearTimeout($.titleAlert._intervalToken);
 		clearTimeout($.titleAlert._timeoutToken);
-		document.title = $.titleAlert._initialText;
+		getDoc().title = $.titleAlert._initialText;
 		
 		$.titleAlert._timeoutToken = null;
 		$.titleAlert._intervalToken = null;
@@ -128,8 +141,8 @@
 			setTimeout(function() {
 				if ($.titleAlert._running)
 					return;
-				document.title = ".";
-				document.title = initialText;
+				getDoc().title = ".";
+				getDoc().title = initialText;
 			}, 1000);
 		}
 	};
