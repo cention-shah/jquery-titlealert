@@ -1,0 +1,23 @@
+{
+  "name": "jquery-titlealert",
+  "version": "1.0.0",
+  "description": "jquery-titlealert =================",
+  "main": "jquery.titlealert.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cention-shah/jquery-titlealert.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cention-shah/jquery-titlealert/issues"
+  },
+  "homepage": "https://github.com/cention-shah/jquery-titlealert#readme"
+}
